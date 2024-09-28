@@ -1,0 +1,83 @@
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+#include <SPI.h>
+#include <MFRC522.h>
+
+#define SS_PIN 10
+#define RST_PIN 9
+MFRC522 rfid(SS_PIN, RST_PIN);
+
+LiquidCrystal_I2C lcd(0x27, 16, 2); // Adjust 0x27 if the I2C address is different
+
+// LED Pins
+int redLED = 2;
+int greenLED = 3;
+int blueLED = 4;
+
+void setup() {
+  // Initialize serial communication
+  Serial.begin(9600);
+  SPI.begin();
+  rfid.PCD_Init();
+  
+  // Initialize the LCD
+  lcd.init();
+  lcd.backlight();
+
+  // Initialize LEDs
+  pinMode(redLED, OUTPUT);
+  pinMode(greenLED, OUTPUT);
+  pinMode(blueLED, OUTPUT);
+  
+  lcd.setCursor(0, 0);
+  lcd.print("Scan RFID tag");
+}
+
+void loop() {
+  // Look for a new card
+  if (!rfid.PICC_IsNewCardPresent() || !rfid.PICC_ReadCardSerial()) {
+    return;
+  }
+
+  // Read RFID tag UID
+  String tag = "";
+  for (byte i = 0; i < rfid.uid.size; i++) {
+    tag += String(rfid.uid.uidByte[i], HEX);
+  }
+
+  Serial.print("Tag UID: ");
+  Serial.println(tag);
+
+  lcd.clear();
+
+  // If recognized tag
+  if (tag == "12345678") { // Replace with your tag UID
+    digitalWrite(redLED, HIGH);
+    digitalWrite(greenLED, LOW);
+    digitalWrite(blueLED, LOW);
+    lcd.setCursor(0, 0);
+    lcd.print("Welcome!");
+  }
+  else if (tag == "87654321") { // Replace with another tag UID
+    digitalWrite(redLED, LOW);
+    digitalWrite(greenLED, HIGH);
+    digitalWrite(blueLED, LOW);
+    lcd.setCursor(0, 0);
+    lcd.print("Access Granted");
+  }
+  else {
+    digitalWrite(redLED, LOW);
+    digitalWrite(greenLED, LOW);
+    digitalWrite(blueLED, HIGH);
+    lcd.setCursor(0, 0);
+    lcd.print("Unknown Tag");
+  }
+  
+  delay(2000); // Wait before reading another card
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Scan RFID tag");
+
+  // Halt PICC to go into power-saving mode
+  rfid.PICC_HaltA();
+}
