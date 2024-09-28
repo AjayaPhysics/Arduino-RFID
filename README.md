@@ -30,6 +30,15 @@ MISO -> Digital pin 12
 MOSI -> Digital pin 11
 SCK -> Digital pin 13
 SS/SDA -> Digital pin 10
+To add a buzzer to the project, the buzzer can be used to provide audio feedback when a valid or invalid RFID tag is scanned. Below are the steps and modifications to include the buzzer in the project.
+
+Components You Will Need (Additional):
+Buzzer (passive or active): To provide sound output.
+Step 1: Wiring the Buzzer
+The buzzer can be connected as follows:
+
+Positive leg of the buzzer to any free digital pin on the Arduino (for example, pin 5).
+Negative leg to GND on the Arduino.
 LEDs:
 
 Connect the positive legs of the LEDs to digital pins on the Arduino (e.g., 2, 3, 4 for red, green, and blue).
