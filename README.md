@@ -1,4 +1,61 @@
 # Arduino-RFID
+# Arduino RFID with LCD, LED, and Buzzer Project
+
+## Overview
+This project uses an RFID module to scan RFID tags. Based on the tag scanned, different LEDs light up, and a message is displayed on an LCD. A buzzer provides audio feedback for valid and invalid scans.
+
+## Components
+- Arduino Uno
+- RFID Module (RC522)
+- I2C LCD Display (16x2)
+- LEDs (Red, Green, Blue)
+- Buzzer
+- Jumper wires
+- Breadboard
+
+## Wiring
+### I2C LCD Display
+- **VCC** -> 5V on Arduino
+- **GND** -> GND on Arduino
+- **SDA** -> A4 on Arduino
+- **SCL** -> A5 on Arduino
+
+### RFID Module (RC522)
+- **VCC** -> 3.3V on Arduino
+- **RST** -> Digital pin 9
+- **GND** -> GND on Arduino
+- **MISO** -> Digital pin 12
+- **MOSI** -> Digital pin 11
+- **SCK** -> Digital pin 13
+- **SS/SDA** -> Digital pin 10
+
+### Buzzer
+- Positive -> Digital pin 5
+- Negative -> GND
+
+### LEDs
+- Positive (Red) -> Digital pin 2
+- Positive (Green) -> Digital pin 3
+- Positive (Blue) -> Digital pin 4
+- All negatives -> GND via resistors
+
+## Libraries
+Install the following libraries in the Arduino IDE:
+- `LiquidCrystal_I2C`
+- `MFRC522`
+
+## Usage
+1. Upload the sketch to the Arduino.
+2. Scan an RFID tag.
+3. Observe the LEDs and the message displayed on the LCD.
+4. Listen for the buzzer feedback:
+   - Short beep for valid tag.
+   - Long beep for invalid tag.
+
+## Notes
+- Adjust the LCD contrast using the potentiometer.
+- Modify the RFID tag UIDs in the code to match your tags.
+
 Arduino RFID with LCD display and LED
 The module shown in the image is an I2C interface for an LCD display, commonly used to simplify connections to an Arduino and reduce the number of required pins. This type of module is usually used to control an LCD display (like a 16x2 or 20x4) in Arduino projects, such as your RFID and LED project.
 
